@@ -11,7 +11,7 @@ timer = 0
 vel_y = 0
 jump = False
 in_air = False
-GRAVITY = 0.09
+GRAVITY = 0.15
 clock = pygame.time.Clock()
 prev_time = time.time()
 flip_gravity = False
@@ -34,6 +34,9 @@ lose_sound.set_volume(0.5)
 speedX0Portal = pygame.image.load("speedx0portal.png")
 speedX1Portal = pygame.image.load("speedx1portal.png")
 speedX2Portal = pygame.image.load("speedx2portal.png")
+speedX5Portal = pygame.image.load("speedx5portal.png")
+speedX8Portal = pygame.image.load("speedx8portal.png")
+speedX12Portal = pygame.image.load("speedx12portal.png")
 invertPortal = pygame.image.load("invertportal.png")
 normalPortal = pygame.image.load("normalportal.png")
 
@@ -46,6 +49,9 @@ PORTALS = {
 	"x0":speedX0Portal,
 	"x1":speedX1Portal,
 	"x2":speedX2Portal,
+	"x5":speedX5Portal,
+	"x8":speedX8Portal,
+	"x12":speedX12Portal,
 	"inverted":invertPortal,
 	'normal':normalPortal
 }
@@ -186,7 +192,7 @@ while run:
 				if player.rect.top < 22:
 					pygame.event.post(pygame.event.Event(player_dead))
 
-			vel_y += GRAVITY * 4
+			vel_y += GRAVITY * 2
 			if vel_y > 3:
 				vel_y = 3
 			dy += vel_y
@@ -205,7 +211,7 @@ while run:
 				if player.rect.top < 22:
 					pygame.event.post(pygame.event.Event(player_dead))
 
-			vel_y += GRAVITY * 8
+			vel_y += GRAVITY * 2
 			if vel_y > 3:
 				vel_y = 3
 			dy += vel_y
@@ -267,12 +273,12 @@ while run:
 			if event.type == pygame.USEREVENT+4:
 				for x in range(8):
 					t = random.choice([50, 100, 130])
-					destroyObjects.append({"x":730+(400*x), "y":t})
+					destroyObjects.append({"x":730+(600*x), "y":t})
 					
 			if event.type == pygame.USEREVENT+5:
 				for x in range(8):
 					t = random.choice([350, 400, 340])
-					destroyObjects.append({"x":730+(400*x), "y":t})
+					destroyObjects.append({"x":730+(600*x), "y":t})
 
             
 
@@ -295,13 +301,22 @@ while run:
 			if player.rect.colliderect(pygame.Rect(portal["x"], portal["y"], PORTALS[portal["type"]].get_rect().width, PORTALS[portal["type"]].get_rect().height)):
 				if portal["type"] == "x2":
 					speed = 300
-					speedBoost = 0.20
+					speedBoost = 0.20 
 				if portal["type"] == "x1":
 					speed = normSpeed
 					speedBoost = 0.10
 				if portal["type"] == "x0":
 					speed = normSpeed/2
-					speedBoost = 0.5
+					speedBoost = 0.05
+				if portal["type"] == "x5":
+					speed = 400
+					speedBoost = 0.30
+				if portal["type"] == "x8":
+					speed = 600
+					speedBoost = 0.40
+				if portal["type"] == "x12":
+					speed = 900
+					speedBoost = 0.55
 				if portal["type"] == "inverted":
 					flip_gravity = True
 				if portal["type"] == "normal":
